@@ -55,10 +55,12 @@ Example of _config.js_  file
 	<tr><td>GET</td><td>/refresh</td><td>_none_</td><td>Force the refresh of the data by retrieving the remote data from the source</td></tr>
 </table>
 
-Routing.loadRoute('GET',    '/posts',       'admin',   'api/posts')
-       .loadRoute('GET',    '/posts/:tag',  'admin',   'api/posts')
-       .loadRoute('GET',    '/post/:slug',  'admin',   'api/post')
-       .loadRoute('GET',    '/tags',        'admin',   'api/tags')
-       .loadRoute('GET',    '/authors',     'admin',   'api/authors')
-       .loadRoute('GET',    '/status',      'admin',   'api/status')
-       .loadRoute('GET',    '/refresh',     'admin',   'api/refresh');
+
+
+# TODO
+* Add more checks on data
+* Add a slugs for tags (for proper api url)
+* Add pagination on _/posts_, _/posts/:tag_ & _/authors_
+* Publish the private dependencie amabla-core
+* Add more info to the README (how it works, )
+* Add a redis store
