@@ -31,3 +31,4 @@ node_modules
 /current.json
 /content
 /public/*
+config.js
