@@ -39,11 +39,11 @@ Model.prototype.getStatus = function() {
     var self = this;
     return Promise.props({
                 source:         self.config.source,
-                data_loaded:    self.app.db.loaded,
-                nb_posts:       self.app.db.getNbPosts(),
-                nb_authors:     self.app.db.getNbAuthors(),
-                nb_tags:        self.app.db.getNbTags(),
-                last_update:    self.app.db.getLastRefresh()
+                data_loaded:    self.loaded,
+                nb_posts:       self.getNbPosts(),
+                nb_authors:     self.getNbAuthors(),
+                nb_tags:        self.getNbTags(),
+                last_update:    self.getLastRefresh()
             });
 }
 
@@ -69,7 +69,7 @@ Model.prototype.getData = function() {
 }
 
 Model.prototype.getPosts = function(tag) {
-  return this.store.getPosts(tag);
+    return this.store.getPosts(tag);
 }
 
 Model.prototype.getNbPosts = function() {
@@ -81,7 +81,7 @@ Model.prototype.getPost = function(slug) {
 }
 
 Model.prototype.getTags = function() {
-  return this.store.getTags();
+    return this.store.getTags();
 }
 
 Model.prototype.getNbTags = function() {
@@ -89,7 +89,7 @@ Model.prototype.getNbTags = function() {
 }
 
 Model.prototype.getAuthors = function() {
-  return this.store.getAuthors();
+    return this.store.getAuthors();
 }
 
 Model.prototype.getNbAuthors = function() {
@@ -97,5 +97,5 @@ Model.prototype.getNbAuthors = function() {
 }
 
 Model.prototype.getData = function() {
-  return this.store.getData();
+    return this.store.getData();
 }

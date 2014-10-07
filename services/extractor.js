@@ -54,10 +54,21 @@ Extractor.prototype.copyPublicAssets = function() {
     var promises = [];
     self.config.assetsToCopy.map(function(toCopy) {
         promises.push(new Promise(function(resolve, reject) {
-            ncp(toCopy.from, toCopy.to, function(err) {
-                console.log("Assets " + toCopy.from + " => " + toCopy.to);
-                return err ? reject(err) : resolve();
-            });
+            fs.exists(toCopy.from, function(exists) {
+                if (!exists) {
+                    console.log("[ASSETS] " + toCopy.from + " doesn't exist");
+                    return resolve();
+                } else {
+                    ncp(toCopy.from, toCopy.to, function(err) {
+                        if (err) {
+                            console.log("[ASSETS] " + toCopy.from + " "+err);
+                        } else {
+                            console.log("[ASSETS] " + toCopy.from + " => " + toCopy.to);
+                        }
+                        return resolve();
+                    });
+                }
+            })
         }));
     });
     return Promise.all(promises);
