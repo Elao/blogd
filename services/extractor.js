@@ -2,15 +2,21 @@ module.exports = function(app, config) {
     return new Extractor(app, config);
 }
 
-var _       = require('lodash');
-var Promise = require('bluebird');
-var path    = require('path');
-var glob    = Promise.promisifyAll(require("glob"));
-var fs      = Promise.promisifyAll(require("fs"));
-var rimraf  = require('rimraf');
-var ncp     = require('ncp').ncp;
-var md      = require("node-markdown").Markdown;
+var _         = require('lodash');
+var Promise   = require('bluebird');
+var path      = require('path');
+var glob      = Promise.promisifyAll(require("glob"));
+var fs        = Promise.promisifyAll(require("fs"));
+var rimraf    = require('rimraf');
+var ncp       = require('ncp').ncp;
+var marked    = require("marked");
+var highlight = require('highlight.js');
 
+marked.setOptions({
+  highlight: function (code) {
+    return highlight.highlightAuto(code).value;
+  }
+});
 
 Extractor = function(app, config) {
     this.app      = app;
@@ -149,7 +155,7 @@ Extractor.prototype.loadPosts = function(fromPath) {
                     }).then(function(postInfo) {
                         try {
                             postInfo.metas   = JSON.parse(postInfo.metas);
-                            postInfo.content = md(postInfo.content.toString().trim());
+                            postInfo.content = marked(postInfo.content.toString().trim());
                             return postInfo;
                         } catch(e) {
                             throw new Error("Error parsing " + postInfo.fileName + " : " + e.message);

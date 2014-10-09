@@ -36,7 +36,7 @@ Example of _config.js_  file
 
     exports.source = {
         type:        'zip',
-        repository:  'https://github.com/Elao/tech-blog/archive/master.zip'
+        url:         'https://github.com/Elao/tech-blog/archive/master.zip'
     }
 
 
