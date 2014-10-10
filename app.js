@@ -1,5 +1,4 @@
-var config      = require('./config'),
-    express     = require('express'),
+var express     = require('express'),
     _           = require('lodash'),
     util        = require('util'),
     Amabla      = require('amabla-core'),
@@ -17,34 +16,34 @@ app.configure(function() {
     app.enable('strict routing');
 
     // Config
-    app.config = config;
+    app.config = require('./configuration/loader');
 
     // Model
-    app.db = require('./model/model')(this, config);
+    app.db = require('./model/model')(this, app.config);
 
     // Extractor
-    app.extractor = require('./services/extractor')(this, config);
+    app.extractor = require('./services/extractor')(this, app.config);
 
     app.use(express.json());
     app.use(express.urlencoded());
 
     app.use('/images', express.static(__dirname + '/public/images'));
 
-    fs.readFile(config.backupFile, function(err, data) {
+    fs.readFile(app.config.backupFile, function(err, data) {
         var loaded = false;
         if (err) { // File doesnt exists or is unreadable
-            console.log("Backup file "+config.backupFile+" not found or unreadable");
+            console.log("Backup file "+app.config.backupFile+" not found or unreadable");
         } else {
             try {
                 var data = JSON.parse(data);
                 app.db.restore(data);
                 loaded = true;
-                console.log("Db load from backup : " + config.backupFile);
+                console.log("Db load from backup : " + app.config.backupFile);
                 app.db.getData().then(function(data) {
 
                 })
             }catch(e) {
-                console.log("Error parsing backup file " + config.backupFile + " : "+e.message);
+                console.log("Error parsing backup file " + app.config.backupFile + " : "+e.message);
             }
         }
         if (!loaded) {
@@ -60,21 +59,20 @@ app.configure(function() {
             })
         }
     });
+
+    var Routing = Amabla.Routing(app, Amabla.Security(null, app.config.security));
+    var ApiController = Routing.loadController('api', app.config);
+
+
+    Routing.loadRoute('GET',    '/posts',         'admin',   'api/posts')
+           .loadRoute('GET',    '/posts/:tag',    'admin',   'api/posts')
+           .loadRoute('GET',    '/post/:slug',    'admin',   'api/post')
+           .loadRoute('GET',    '/tags',          'admin',   'api/tags')
+           .loadRoute('GET',    '/authors',       'admin',   'api/authors')
+           .loadRoute('GET',    '/status',        'admin',   'api/status')
+           .loadRoute('GET',    '/refresh',       'admin',   'api/refresh')
+           .loadRoute('GET',    '/authors/:slug', 'admin',   'api/author')
+           .loadRoute('GET',    '/authors/:slug/posts', 'admin', 'api/authorPosts');
+
+    app.listen(app.config.port);
 });
-
-var Routing = Amabla.Routing(app, Amabla.Security(null, config.security));
-
-var ApiController = Routing.loadController('api', config);
-
-
-Routing.loadRoute('GET',    '/posts',         'admin',   'api/posts')
-       .loadRoute('GET',    '/posts/:tag',    'admin',   'api/posts')
-       .loadRoute('GET',    '/post/:slug',    'admin',   'api/post')
-       .loadRoute('GET',    '/tags',          'admin',   'api/tags')
-       .loadRoute('GET',    '/authors',       'admin',   'api/authors')
-       .loadRoute('GET',    '/status',        'admin',   'api/status')
-       .loadRoute('GET',    '/refresh',       'admin',   'api/refresh')
-       .loadRoute('GET',    '/authors/:slug', 'admin',   'api/author')
-       .loadRoute('GET',    '/authors/:slug/posts', 'admin', 'api/authorPosts');
-
-app.listen(app.config.port);
