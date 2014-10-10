@@ -47,9 +47,36 @@ Controller.prototype.getTagsAction = function() {
 Controller.prototype.getAuthorsAction = function() {
     var self = this;
     return function(req, res, next) {
-        self.app.db.getAuthors().then(function(articles) {
-            res.json(articles);
+        self.app.db.getAuthors().then(function(authors) {
+            res.json(authors);
         });
+    }
+}
+
+Controller.prototype.getAuthorAction = function() {
+    var self = this;
+    return function(req, res, next) {
+        self.app.db.getAuthor(req.param('slug'))
+            .then(function(author) {
+                return res.json(author);
+            }).catch(function(e){
+                return res.json(404, e);
+            });
+    }
+}
+
+Controller.prototype.getAuthorPostsAction = function() {
+    var self = this;
+    return function(req, res, next) {
+        self.app.db.getAuthor(req.param('slug'))
+            .then(function(author) {
+                self.app.db.getPosts(false, author)
+                    .then(function(posts) {
+                        res.json(posts);
+                    })
+            }).catch(function(e){
+                return res.json(404, e);
+            })
     }
 }
 

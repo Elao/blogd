@@ -36,13 +36,20 @@ Model.prototype.isLoaded = function() {
     return this.loaded;
 }
 
-Model.prototype.getPosts = function(tag) {
+Model.prototype.getPosts = function(tag, author) {
     var self = this;
     return new Promise(function(resolve, reject) {
         var posts = self.data.posts;
 
         if (tag) {
             posts = _.filter(posts, function(a) { return _.contains(a.metas.tags, tag); });
+        }
+
+        if (author) {
+            posts = _.filter(posts, function(a) {
+                return (a.metas.publish_by.toLowerCase() == author.email.toLowerCase()) ||
+                       (a.metas.publish_by.toLowerCase() == author.slug.toLowerCase());
+            });
         }
 
         var sortData = function(p) {
@@ -67,6 +74,7 @@ Model.prototype.getPost = function(slug) {
         if (!slug || typeof slug !== 'string') {
             reject("Invalid slug supplied");
         } else {
+            slug = slug.toLowerCase();
             var post = _.find(self.data.posts, function(p) { return p.metas.slug == slug });
             return post ? resolve(post) : reject("Post not found");
         }
@@ -89,6 +97,21 @@ Model.prototype.getAuthors = function() {
     return new Promise(function(resolve, reject) {
         return resolve(self.data.users);
     })
+}
+
+Model.prototype.getAuthor = function(slug) {
+    var self = this;
+    return new Promise(function(resolve, reject) {
+        if (!slug || typeof slug !== 'string') {
+            reject("Invalid slug supplied");
+        } else {
+            slug = slug.toLowerCase();
+            var u = _.find(self.data.users, function(u) {
+                return _.contains(slug, '@') ? (u.email.toLowerCase() == slug) : (u.slug.toLowerCase() == slug);
+            });
+            return u ? resolve(u) : reject("Author not found");;
+        }
+    });
 }
 
 Model.prototype.getNbAuthors = function() {

@@ -51,6 +51,8 @@ Example of _config.js_  file
 	<tr><td>GET</td><td>/post/:slug</td><td>slug: a post's slug</td><td>Retrieve a single post</td></tr>
 	<tr><td>GET</td><td>/tags</td><td>_none_</td><td>Retrieve the list of available tags</td></tr>
 	<tr><td>GET</td><td>/authors</td><td>_none_</td><td>Retrieve the list of authors</td></tr>
+    <tr><td>GET</td><td>/authors/:slug</td><td>slug: slug or email of an author</td><td>Retrieve an author</td></tr>
+    <tr><td>GET</td><td>/authors/:slug/posts</td><td>slug: slug or email of an author</td><td>Retrieve list of posts from given author</td></tr>    
 	<tr><td>GET</td><td>/status</td><td>_none_</td><td>Retrieve the content status (last update, number of tags, posts, authors, ...)</td></tr>
 	<tr><td>GET</td><td>/refresh</td><td>_none_</td><td>Force the refresh of the data by retrieving the remote data from the source</td></tr>
 </table>

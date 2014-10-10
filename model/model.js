@@ -68,8 +68,8 @@ Model.prototype.getData = function() {
     return this.store.getData();
 }
 
-Model.prototype.getPosts = function(tag) {
-    return this.store.getPosts(tag);
+Model.prototype.getPosts = function(tag, author) {
+    return this.store.getPosts(tag, author);
 }
 
 Model.prototype.getNbPosts = function() {
@@ -77,7 +77,15 @@ Model.prototype.getNbPosts = function() {
 }
 
 Model.prototype.getPost = function(slug) {
-    return this.store.getPost(slug);
+    var self = this;
+    return self.store.getPost(slug)
+           .then(function(post) {
+                return self.store.getAuthor(post.metas.publish_by)
+                           .then(function(author) {
+                                post.author = author;
+                                return post;
+                            });
+        });
 }
 
 Model.prototype.getTags = function() {
@@ -90,6 +98,10 @@ Model.prototype.getNbTags = function() {
 
 Model.prototype.getAuthors = function() {
     return this.store.getAuthors();
+}
+
+Model.prototype.getAuthor = function(slug) {
+    return this.store.getAuthor(slug);
 }
 
 Model.prototype.getNbAuthors = function() {
