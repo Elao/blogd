@@ -22,7 +22,9 @@ if (fs.existsSync(cfg)) {
             module.exports = pkg.blogd;
             loaded = true;
         }
-    } else if (fs.existsSync(p2f)) {
+    }
+
+    if (!loaded && fs.existsSync(p2f)) {
         var pkg = require(p2f);
         if (_.has(pkg, 'blogd')) {
             console.info("Loading config from " + p2f);
