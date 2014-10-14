@@ -47,8 +47,8 @@ Example of _config.js_  file
 <table>
 	<tr><th>Method</th><th>Route</th><th>Params</th><th>Description</th><tr>
 	<tr><td>GET</td><td>/posts</td><td>_none_</td><td>Retrieve list of blog's post ordered by publish date desc</td></tr>
-	<tr><td>GET</td><td>/posts/:tag</td><td>tag: a tag</td><td>Retrive list of blog's post by tag</td></tr>
-	<tr><td>GET</td><td>/post/:slug</td><td>slug: a post's slug</td><td>Retrieve a single post</td></tr>
+	<tr><td>GET</td><td>/posts?tag=:tag</td><td>tag: a tag</td><td>Retrive list of blog's post by tag</td></tr>
+	<tr><td>GET</td><td>/posts/:slug</td><td>slug: a post's slug</td><td>Retrieve a single post</td></tr>
 	<tr><td>GET</td><td>/tags</td><td>_none_</td><td>Retrieve the list of available tags</td></tr>
 	<tr><td>GET</td><td>/authors</td><td>_none_</td><td>Retrieve the list of authors</td></tr>
     <tr><td>GET</td><td>/authors/:slug</td><td>slug: slug or email of an author</td><td>Retrieve an author</td></tr>

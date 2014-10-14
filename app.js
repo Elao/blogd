@@ -65,8 +65,7 @@ app.configure(function() {
 
 
     Routing.loadRoute('GET',    '/posts',         'admin',   'api/posts')
-           .loadRoute('GET',    '/posts/:tag',    'admin',   'api/posts')
-           .loadRoute('GET',    '/post/:slug',    'admin',   'api/post')
+           .loadRoute('GET',    '/posts/:slug',   'admin',   'api/post')
            .loadRoute('GET',    '/tags',          'admin',   'api/tags')
            .loadRoute('GET',    '/authors',       'admin',   'api/authors')
            .loadRoute('GET',    '/status',        'admin',   'api/status')

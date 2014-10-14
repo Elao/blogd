@@ -15,7 +15,7 @@ Controller = function(app, config) {
 Controller.prototype.getPostsAction = function() {
     var self = this;
     return function(req, res, next) {
-        self.app.db.getPosts(req.param('tag')).then(function(posts) {
+        self.app.db.getPosts(req.params.tag).then(function(posts) {
             return res.json(posts || []);
         }).catch(function(e) {
             return res.json(e);
