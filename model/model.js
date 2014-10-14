@@ -68,8 +68,8 @@ Model.prototype.getData = function() {
     return this.store.getData();
 }
 
-Model.prototype.getPosts = function(tag, author) {
-    return this.store.getPosts(tag, author);
+Model.prototype.getPosts = function(params) {
+    return this.store.getPosts(params);
 }
 
 Model.prototype.getNbPosts = function() {

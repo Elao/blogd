@@ -3,7 +3,8 @@ module.exports = function (app, config) {
 }
 
 var _                      = require('lodash'),
-    Promise                = require('bluebird');
+    Promise                = require('bluebird'),
+    util                   = require('util');
 
 Controller = function(app, config) {
     this.app    = app;
@@ -15,7 +16,18 @@ Controller = function(app, config) {
 Controller.prototype.getPostsAction = function() {
     var self = this;
     return function(req, res, next) {
-        self.app.db.getPosts(req.param('tag')).then(function(posts) {
+        var params = {};
+        if (req.param('tag') && util.isString(req.param('tag'))) {
+            params.tag = req.param('tag');
+        }
+        if (req.param('limit') && parseInt(req.param('limit')) > 0) {
+            params.limit = parseInt(req.param('limit'));
+        }
+        if (req.param('offset') && parseInt(req.param('offset')) > 0) {
+            params.offset = parseInt(req.param('offset'));
+        }
+
+        self.app.db.getPosts(params).then(function(posts) {
             return res.json(posts || []);
         }).catch(function(e) {
             return res.json(e);
@@ -70,7 +82,7 @@ Controller.prototype.getAuthorPostsAction = function() {
     return function(req, res, next) {
         self.app.db.getAuthor(req.param('slug'))
             .then(function(author) {
-                self.app.db.getPosts(false, author)
+                self.app.db.getPosts({author: author})
                     .then(function(posts) {
                         res.json(posts);
                     })

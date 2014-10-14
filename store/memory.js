@@ -36,31 +36,33 @@ Model.prototype.isLoaded = function() {
     return this.loaded;
 }
 
-Model.prototype.getPosts = function(tag, author) {
+Model.prototype.getPosts = function(params) {
     var self = this;
     return new Promise(function(resolve, reject) {
         var posts = self.data.posts;
 
-        if (tag) {
-            posts = _.filter(posts, function(a) { return _.contains(a.metas.tags, tag); });
+        if (params.tag) {
+            posts = _.filter(posts, function(a) { return _.contains(a.metas.tags, params.tag); });
         }
 
-        if (author) {
+        if (params.author) {
             posts = _.filter(posts, function(a) {
-                return (a.metas.publish_by.toLowerCase() == author.email.toLowerCase()) ||
-                       (a.metas.publish_by.toLowerCase() == author.slug.toLowerCase());
+                return (a.metas.publish_by.toLowerCase() == params.author.email.toLowerCase()) ||
+                       (a.metas.publish_by.toLowerCase() == params.author.slug.toLowerCase());
             });
         }
+
+        var limit  = params.limit  || 10;
+        var offset = params.offset || 0;
 
         var sortData = function(p) {
             return -(Moment(p.metas.publish_at).unix());
         }
 
-        posts = _.sortBy(posts, sortData);
-        console.log("POST ARE : ");
-        console.log(posts);
+        posts = _.sortBy(posts, sortData)
 
-        return resolve(posts);
+        console.log("Using slice : ", offset, offset+limit);
+        return resolve(posts.slice(offset, offset+limit));
     });
 }
 

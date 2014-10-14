@@ -1,13 +1,27 @@
 {
   "name": "blogd",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.1.0",
+  "description": "Node Server providing an API to expose blog data from a formated github repository",
+  "keywords": ["blog", "blogd", "elao", "api", "github", "repository", "git", "zip"],
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "homepage": "https://github.com/elao/blogd",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/elao/blogd.git"
+  },
+  "bugs": {
+    "url": "http://github.com/elao/blogd/issues"
+  },
+  "author": {
+    "name": "ELAO",
+    "email": "contact@elao.com",
+    "url": "http://www.elao.com"
+  },
+  "readmeFilename": "README.md",
+  "license": "MIT",
   "dependencies": {
     "adm-zip": "^0.4.4",
     "amabla-core": "git+ssh://git@git.elao.fr:amabla/amabla-core.git",
