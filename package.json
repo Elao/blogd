@@ -24,7 +24,7 @@
   "license": "MIT",
   "dependencies": {
     "adm-zip": "^0.4.4",
-    "amabla-core": "git+ssh://git@git.elao.fr:amabla/amabla-core.git",
+    "rest-framework": "^0.1.0",
     "bluebird": "^2.0",
     "express": "3.x.x",
     "glob": "^4.0.6",

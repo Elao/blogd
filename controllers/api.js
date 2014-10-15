@@ -17,12 +17,15 @@ Controller.prototype.getPostsAction = function() {
     var self = this;
     return function(req, res, next) {
         var params = {};
+
         if (req.param('tag') && util.isString(req.param('tag'))) {
             params.tag = req.param('tag');
         }
+
         if (req.param('limit') && parseInt(req.param('limit')) > 0) {
             params.limit = parseInt(req.param('limit'));
         }
+
         if (req.param('offset') && parseInt(req.param('offset')) > 0) {
             params.offset = parseInt(req.param('offset'));
         }
