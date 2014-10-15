@@ -63,13 +63,14 @@ Example of _config.js_  file
 
 In your config, you can define mapped directories from your source, to a folder and an url.
 For example:
+
     exports.assetsToCopy  = [{
         from: exports.outputFolder + "/posts/images/",
         to:   __dirname + "/public/images",
         url: "/images/"
     }];
     
-Blogd will copy the content of */posts/images/* from your repository, to the local directory */public/images* and then map the */public/images/* folder to the url */images/*
+Blogd will copy the content of */posts/images/* from your repository, to the Blogd local directory */public/images* and then map the */public/images/* folder to the url */images/*
 For example, if you have a file */posts/images/myimage.png* in your repository, you'll be able to access the file to *http://localhost:5555/images/myimage.png*
 
 
