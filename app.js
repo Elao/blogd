@@ -27,7 +27,9 @@ app.configure(function() {
     app.use(express.json());
     app.use(express.urlencoded());
 
-    app.use('/images', express.static(__dirname + '/public/images'));
+    _.each(app.config.assetsToCopy, function(assetToCopy) {
+        app.use(assetToCopy.url, express.static(assetToCopy.to));
+    });
 
     fs.readFile(app.config.backupFile, function(err, data) {
         var loaded = false;

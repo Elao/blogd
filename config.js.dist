@@ -6,8 +6,9 @@ exports.debug         = true;
 exports.outputFolder  = __dirname + "/content";
 exports.backupFile    = __dirname + "/current.json";
 exports.assetsToCopy  = [{
-  from: exports.outputFolder + "/posts/images/",
-  to:   __dirname + "/public/images"
+    from: exports.outputFolder + "/posts/images/",
+    to:   __dirname + "/public/images",
+    url:  "/images"
 }];
 
 exports.security = {
