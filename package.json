@@ -1,7 +1,7 @@
 {
   "name": "blogd",
   "description": "Node Server providing an API to expose blog data from a formated github repository",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "licenses": [
     {
       "type": "MIT",
@@ -32,6 +32,7 @@
     "zip"
   ],
   "main": "app.js",
+  "bin": "./app",
   "dependencies": {
     "adm-zip": "^0.4.4",
     "rest-framework": "^0.1.0",
