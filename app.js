@@ -3,14 +3,14 @@
 var express     = require('express'),
     _           = require('lodash'),
     util        = require('util'),
-    Amabla      = require('amabla-core'),
+    RF          = require('rest-framework'),
     Promise     = require('bluebird'),
     fs          = require('fs');
 
 
 var app = exports = module.exports = express();
 
-app.utils = require('amabla-core').Utils;
+app.utils = RF.Utils;
 
 app.configure(function() {
     app.enable('trust proxy');
@@ -64,7 +64,7 @@ app.configure(function() {
         }
     });
 
-    var Routing = Amabla.Routing(app, Amabla.Security(null, app.config.security));
+    var Routing = RF.Routing(app, RF.Security(null, app.config.security));
     var ApiController = Routing.loadController('api', app.config);
 
 
