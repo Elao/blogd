@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var express     = require('express'),
     _           = require('lodash'),
     util        = require('util'),
