@@ -1,27 +1,37 @@
 {
   "name": "blogd",
-  "version": "0.1.0",
   "description": "Node Server providing an API to expose blog data from a formated github repository",
-  "keywords": ["blog", "blogd", "elao", "api", "github", "repository", "git", "zip"],
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "homepage": "https://github.com/elao/blogd",
+  "version": "0.1.0",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://raw.githubusercontent.com/Elao/blogd/master/LICENSE"
+    }
+  ],
+  "homepage": "https://github.com/Elao/blogd",
   "repository": {
     "type": "git",
-    "url": "git://github.com/elao/blogd.git"
+    "url": "https://github.com/Elao/blogd"
   },
   "bugs": {
-    "url": "http://github.com/elao/blogd/issues"
+    "url": "https://github.com/Elao/blogd/issues"
   },
   "author": {
-    "name": "ELAO",
+    "name": "Elao",
     "email": "contact@elao.com",
-    "url": "http://www.elao.com"
+    "url": "http://www.elao.com/"
   },
-  "readmeFilename": "README.md",
-  "license": "MIT",
+  "keywords": [
+    "blog",
+    "blogd",
+    "elao",
+    "api",
+    "github",
+    "repository",
+    "git",
+    "zip"
+  ],
+  "main": "app.js",
   "dependencies": {
     "adm-zip": "^0.4.4",
     "rest-framework": "^0.1.0",
