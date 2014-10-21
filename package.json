@@ -35,7 +35,7 @@
   "bin": "./app.js",
   "dependencies": {
     "adm-zip": "^0.4.4",
-    "rest-framework": "^0.1.0",
+    "rest-framework": "^0.2.1",
     "bluebird": "^2.0",
     "express": "3.x.x",
     "glob": "^4.0.6",
