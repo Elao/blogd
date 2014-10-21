@@ -5,6 +5,7 @@ var path = require('path');
 var cfg    = __dirname + '/../config.js';
 var loaded = false;
 var defaultConfig = {
+    host:           '127.0.0.1',
     port:           5555,
     store:          'memory',
     debug:          false,
