@@ -30,7 +30,9 @@ app.configure(function() {
     app.use(express.urlencoded());
 
     _.each(app.config.assetsToCopy, function(assetToCopy) {
-        app.use(assetToCopy.url, express.static(assetToCopy.to));
+        if (assetToCopy.url) {
+            app.use(assetToCopy.url, express.static(assetToCopy.to));    
+        }
     });
 
     fs.readFile(app.config.backupFile, function(err, data) {
