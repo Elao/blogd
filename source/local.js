@@ -17,7 +17,6 @@ Sourcer = function(app, config) {
 
 Sourcer.prototype.load = function(folder) {
     var self = this;
-    var url  = self.config.source.url;
 
     return new Promise(function(resolve, reject) {
         ncp(self.config.source.path, folder, function (err) {
