@@ -31,33 +31,35 @@ var defaultConfig = {
 
 
 if (fs.existsSync(cfg)) {
-    console.info("Loading config from " + path.resolve(cfg));
-    loaded = true;
+    console.info("Config: " + path.resolve(cfg));
     module.exports = _.defaults(require('../config.js'), defaultConfig);
 } else {
     var cnt = 0;
-    var p1f = path.resolve(__dirname + '/../package.json');
-    var p2f = path.resolve(__dirname + '/../../../package.json');
-
-    if (fs.existsSync(p1f)) {
-        var pkg = require(p1f);
-        if (_.has(pkg, 'blogd')) {
-            console.info("Loading config from " + p1f);
-            module.exports = _.defaults(pkg.blogd, defaultConfig);
-            loaded = true;
+    var paths = [
+        path.resolve(process.cwd() + '/package.json'),
+        path.resolve(__dirname + '/../package.json'),
+        path.resolve(__dirname + '/../../../package.json')
+    ];
+    var configFile = false;
+    var pkg        = false;
+    var found      = false;
+    for (var i = 0; i < paths.length; i++) {
+        var p = paths[i];
+        if (fs.existsSync(p)) {
+            pkg = require(p);
+            if (_.has(pkg, 'blogd') && _.isObject(pkg.blogd)) {
+                configFile = p;
+                found = true;
+                break;    
+            }
         }
     }
-
-    if (!loaded && fs.existsSync(p2f)) {
-        var pkg = require(p2f);
-        if (_.has(pkg, 'blogd')) {
-            console.info("Loading config from " + p2f);
-            module.exports = _.defaults(pkg.blogd, defaultConfig);
-            loaded = true;
-        }
+    if (found) {
+        console.info("Config: "+configFile);
+        module.exports = _.defaults(pkg.blogd, defaultConfig);
+    } else {
+        console.error("Error: Configuration not found no config.js file, and no 'blogd' config key in package.json");
+        process.exit(1);
     }
 }
 
-if (!loaded) {
-    throw new Error("No configuration found (no config.js file, and no \"blogd\" config key in package.json");
-}

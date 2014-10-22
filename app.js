@@ -21,6 +21,11 @@ app.enable('strict routing');
 // Config
 app.config = require('./configuration/loader');
 
+if (!app.config.source) {
+    console.log("Error config: 'source' parameter is missing");
+    process.exit(1);
+}
+
 // Model
 app.db = require('./model/model')(this, app.config);
 
