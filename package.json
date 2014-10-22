@@ -1,7 +1,7 @@
 {
   "name": "blogd",
   "description": "Node Server providing an API to expose blog data from a formated github repository",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "licenses": [
     {
       "type": "MIT",

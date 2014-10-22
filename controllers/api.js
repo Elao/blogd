@@ -18,7 +18,7 @@ Controller.prototype.getPostsAction = function() {
     return function(req, res, next) {
         var params = {};
 
-        if (req.param('tag') && util.isString(req.param('tag'))) {
+        if (req.param('tag') && _.isString(req.param('tag'))) {
             params.tag = req.param('tag');
         }
 
