@@ -42,7 +42,9 @@ Model.prototype.getPosts = function(params) {
         var posts = self.data.posts;
 
         if (params.tag) {
-            posts = _.filter(posts, function(a) { return _.contains(a.metas.tags, params.tag); });
+            posts = _.filter(posts, function(post) { 
+                return _.filter(post.metas.tags, {slug: params.tag}).length > 0;
+            });
         }
 
         if (params.author) {
@@ -61,7 +63,6 @@ Model.prototype.getPosts = function(params) {
 
         posts = _.sortBy(posts, sortData)
 
-        console.log("Using slice : ", offset, offset+limit);
         return resolve(posts.slice(offset, offset+limit));
     });
 }

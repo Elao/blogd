@@ -38,17 +38,17 @@ Extractor = function(app, config) {
     return this;
 };
 
-var requiredMetas = ['slug', 'title', 'status', 'publish_by', 'publish_at'];
+var requiredMetas    = ['slug', 'title', 'status', 'publish_by', 'publish_at'];
+var requiredTagMetas = ['slug', 'label'];
 
 Extractor.prototype.cleanData = function() {
     var self = this;
     return new Promise(function(resolve, reject) {
         rimraf(self.config.outputFolder, function(err) {
             if (err) {
-                console.log("Cleaning output folder failed : ", err);
+                console.error("Cleaning output folder failed : ", err);
                 return reject(err);
             } else {
-                console.log("Cleaning output folder succeed");
                 return resolve();
             }
         })
@@ -58,29 +58,35 @@ Extractor.prototype.cleanData = function() {
 Extractor.prototype.copyPublicAssets = function() {
     var self     = this;
     var promises = [];
-    self.config.assetsToCopy.map(function(toCopy) {
-        promises.push(new Promise(function(resolve, reject) {
-            fs.exists(toCopy.from, function(exists) {
-                if (!exists) {
-                    console.log("[ASSETS] " + toCopy.from + " doesn't exist");
-                    return resolve();
-                } else {
-                    ncp(toCopy.from, toCopy.to, function(err) {
-                        if (err) {
-                            console.log("[ASSETS] " + toCopy.from + " "+err);
-                        } else {
-                            console.log("[ASSETS] " + toCopy.from + " => " + toCopy.to);
-                        }
+
+    try {
+        self.config.assetsToCopy.map(function(toCopy) {
+            promises.push(new Promise(function(resolve, reject) {
+                fs.exists(toCopy.from, function(exists) {
+                    if (!exists) {
                         return resolve();
-                    });
-                }
-            })
-        }));
-    });
-    return Promise.all(promises);
+                    } else {
+                        try{
+                        ncp(toCopy.from, toCopy.to, function(err) {
+                            if (err) {
+                                console.error("[ASSETS] " + toCopy.from + " "+err);
+                            }
+                            return resolve();
+                        });
+                        }catch(e) {
+                            console.error("Error ncp : ", e);
+                        }
+                    }
+                })
+            }));
+        });
+        return Promise.all(promises);
+    } catch(e) {
+        console.log("Error :( ", e);
+    }
 }
 
-Extractor.prototype.refreshData = function(refresh) {
+Extractor.prototype.refreshData = function(fromCache) {
     var self    = this;
     var errors  = [];
     var warning = [];
@@ -91,9 +97,17 @@ Extractor.prototype.refreshData = function(refresh) {
         data:       undefined
     };
 
-    return this.cleanData()     // Clean temporary folder
+    console.info("Refreshing data "+(fromCache ? "from cache" : "from source"));
+
+    return new Promise(function(resolve, reject) {
+                if (fromCache) {
+                    return resolve(true);
+                } else {
+                    return resolve(self.cleanData());      // Clean temporary folder
+                }
+            })
             .then(function() {
-                return self.sourcer.load(self.config.outputFolder) // Try to load data in the temporary folder
+                return fromCache ? true : self.sourcer.load(self.config.outputFolder); // Try to load data in the temporary folder
             })
             .then(function() {
                 return self.loadPosts();        // Try to load posts
@@ -111,7 +125,6 @@ Extractor.prototype.refreshData = function(refresh) {
                 return self.verifyData();       // Verify data
             })
             .then(function(verifyResult) {
-                console.log("Verify results : ", verifyResult);
                 refreshResult.errors  = _.map(verifyResult.errors, function(e) { return e.message; });
                 refreshResult.warning = verifyResult.warnings;
 
@@ -120,7 +133,7 @@ Extractor.prototype.refreshData = function(refresh) {
                     return;
                 } else {
                     refreshResult.status = true;
-                    return self.copyPublicAssets();   // Copy the public assets data into the main folder
+                    return fromCache ? true : self.copyPublicAssets();   // Copy the public assets data into the main folder
                 }
             })
             .then(function() {
@@ -199,6 +212,26 @@ Extractor.prototype.verifyData = function() {
         var warnings = [];
         var slugs    = [];
 
+        // Check the tags
+        if (!_.isArray(self.data.tags)) {
+            errors.push(new Error('The tags file must contains an array of tags'));
+        } else {
+            _.each(self.data.tags, function(tag) {
+                if (!_.isObject(tag)) {
+                    errors.push(new Error("Tags must be objects"));
+                } else {
+                    var missingMetas = _.filter(requiredTagMetas, function(property) { return tag[property] == undefined });
+                    if (missingMetas.length > 0) {
+                        errors.push(new Error("Invalid Tag " + tag + ": Missing properties : " + missingMetas.join(', ')));
+                    }
+                }
+            });
+        }
+
+        if (errors.length > 0) {
+            return resolve({errors: errors, warnings: []});
+        }
+
         _.each(self.data.posts, function(post, i) {
             // Check required meta
             var missingMetas = _.filter(requiredMetas, function(property) { return !post.metas[property] });
@@ -217,11 +250,27 @@ Extractor.prototype.verifyData = function() {
 
             // Check article tags
             if (post.metas.tags) {
-                var diff = _.difference(post.metas.tags, self.data.tags);
-                if (diff.length > 0) {
-                    warnings.push(" [Post "+post.fileName+"] Unknow tags : '" + diff.join(', ') + "' will be ignored");
+                var tagsLabels = _.indexBy(self.data.tags, 'label');
+                var tagsSlugs  = _.indexBy(self.data.tags, 'slug');
+
+                var postTags     = [];
+                var notFoundTags = [];
+
+                _.each(post.metas.tags, function(postTag) {
+                    if (_.has(tagsSlugs, postTag)) {
+                        postTags.push(tagsSlugs[postTag]);
+                    } else if (_.has(tagsLabels, postTag)) {
+                        postTags.push(tagsLabels[postTag]);
+                    } else {
+                        notFoundTags.push(postTag);
+                    }
+                });
+
+
+                if (notFoundTags.length > 0) {
+                    warnings.push(" [Post "+post.fileName+"] Unknow tags : '" + notFoundTags.join(', ') + "' will be ignored");
                 }
-                post.metas.tags = _.intersection(post.metas.tags, self.data.tags);
+                post.metas.tags = postTags;
             }
 
             // Check article publisher

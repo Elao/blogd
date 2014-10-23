@@ -51,9 +51,6 @@ fs.readFile(app.config.backupFile, function(err, data) {
             app.db.restore(data);
             loaded = true;
             console.log("Db load from backup : " + app.config.backupFile);
-            app.db.getData().then(function(data) {
-
-            })
         }catch(e) {
             console.log("Error parsing backup file " + app.config.backupFile + " : "+e.message);
         }

@@ -45,7 +45,7 @@ Controller.prototype.getPostAction = function() {
             .then(function(post) {
                 return res.json(post);
             }).catch(function(e) {
-                return res.json(404, e);
+                return res.status(400).json(e);
             });
     }
 }
@@ -53,8 +53,8 @@ Controller.prototype.getPostAction = function() {
 Controller.prototype.getTagsAction = function() {
     var self = this;
     return function(req, res, next) {
-        self.app.db.getTags().then(function(articles) {
-            res.json(articles);
+        self.app.db.getTags().then(function(tags) {
+            res.json(tags);
         });
     }
 }
@@ -75,7 +75,7 @@ Controller.prototype.getAuthorAction = function() {
             .then(function(author) {
                 return res.json(author);
             }).catch(function(e){
-                return res.json(404, e);
+                return res.status(400).json(e);
             });
     }
 }
@@ -90,7 +90,7 @@ Controller.prototype.getAuthorPostsAction = function() {
                         res.json(posts);
                     })
             }).catch(function(e){
-                return res.json(404, e);
+                return res.status(400).json(e);
             })
     }
 }
@@ -102,7 +102,7 @@ Controller.prototype.getStatusAction = function() {
         .then(function(status) {
             return res.json(status);
         }).catch(function(e){
-            return res.json(400, "Error: " + e);
+            return res.status(400).json("Error: " + e);
         })
     }
 };
@@ -110,7 +110,7 @@ Controller.prototype.getStatusAction = function() {
 Controller.prototype.getRefreshAction = function() {
     var self = this;
     return function(req, res, next) {
-        self.app.extractor.refreshData()
+        self.app.extractor.refreshData(true)
         .then(function(refreshResult){
             if (refreshResult.status) {
                 return self.app.db.load(refreshResult.data)
@@ -118,7 +118,7 @@ Controller.prototype.getRefreshAction = function() {
                             return res.json(_.omit(refreshResult, 'data'));
                         })
             } else {
-                return res.json(400, refreshResult);
+                return res.status(400).json(refreshResult);
             }
         })
         .catch(function(e) {

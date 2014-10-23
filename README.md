@@ -134,15 +134,22 @@ _Example of users.json file:_
 ##Tags file:
 Must be at the root of the repo and be named _tags.json_
 It contains the allowed tags used in posts. If a post use a tag not referenced in these file, the tag will be ignored.
+Properties *label* and *slug* on tag objets are mandatory, but you can add other metas and you'll get them back through the API.
 
 _Example of tags.json file:_
 
     [
-        "Symfony2",
-        "HTML/CSS",
-        "Webdesign",
-        "Framework",
-        "Osef"
+        {"label": "Symfony", "slug": "symfony"},
+        {"label": "HTML/CSS", "slug": "html-css"},
+        {"label": "Webdesign", "slug": "webdesign"},
+        {"label": "Framework", "slug": "framework"},
+        {"label": "Translation", "slug": "translation"},
+        {"label": "Form", "slug": "form"},
+        {"label": "Theming", "slug": "theming"},
+        {"label": "Linux", "slug": "linux"},
+        {"label": "Tips", "slug": "tips"},
+        {"label": "Talk", "slug": "talk"},
+        {"label": "PHP", "slug": "php"}
     ]
 
 
@@ -171,7 +178,7 @@ The metas are like this:
 	<tr><th>Meta</th><th>Description</th></tr>
 	<tr><td>_slug_ \*</td><td>The post's slug (used to identify the post. Must be unique among all posts)</td></tr>
 	<tr><td>_title_ \*</td><td>The post's title</td></tr>
-	<tr><td>_tags_</td><td>List of post's tag (must be reference by name of tags contains in the tags's file)</td></tr>
+	<tr><td>_tags_</td><td>List of post's tag (must be reference by slug or label of tags contains in the tags's file)</td></tr>
 	<tr><td>_status_ \*</td><td>The post's status ("published", "draft")</td></tr>
 	<tr><td>_publish_by_ \*</td><td>The publisher of the post (must be the reference of a user contains in the users's file either by email or slug)</td></tr>
 	<tr><td>_publish_at_ \*</td><td>A date (any format supported by Moment.js)</td></tr>	
@@ -187,11 +194,11 @@ _Example of a post meta file:_
 
     {
         "tags":	           		["Symfony2", "Toto", "Titi"],
-        "title":				"Imported post in ghost",
-        "slug":					"imported-post-in-ghost",
+        "title":				"My super post from a nice repository",
+        "slug":					"my-super-post-from-a-nice-repository",
         "status":				"published",
-        "meta_title":			"Imported post in ghost",
-        "meta_description":		"An imported post into ghost description",
+        "meta_title":			"Imported post from a repository",
+        "meta_description":		"A super amazing post about everything",
         "publish_by":"			vincent.bouzeran@elao.com",
         "publish_at":			"2014-07-06"
     }
@@ -199,7 +206,5 @@ _Example of a post meta file:_
 
 # TODO
 * Add more checks on data
-* Add a slugs for tags (for proper api url)
 * Add pagination on _/posts/:tag_ & _/authors_
-* Add more info to the README (how it works, )
 * Add a redis store
