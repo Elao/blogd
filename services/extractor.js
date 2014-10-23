@@ -62,19 +62,29 @@ Extractor.prototype.copyPublicAssets = function() {
     try {
         self.config.assetsToCopy.map(function(toCopy) {
             promises.push(new Promise(function(resolve, reject) {
+                self.app.logger.debug("Assets from "+toCopy.from+" => "+toCopy.to);
                 fs.exists(toCopy.from, function(exists) {
                     if (!exists) {
+                        self.app.logger.error("Assets folder not found: "+toCopy.from);
                         return resolve();
                     } else {
                         try{
-                        ncp(toCopy.from, toCopy.to, function(err) {
-                            if (err) {
-                                console.error("[ASSETS] " + toCopy.from + " "+err);
-                            }
+                            self.app.logger.debug("Copying folders ...");
+                            setTimeout(function(){ resolve() }, 4000);
+                            /*
                             return resolve();
-                        });
+                            ncp(toCopy.from, toCopy.to, function(err) {
+                                self.app.logger.debug("Copying folders succeed");
+                                if (err) {
+                                    console.error("[ASSETS] " + toCopy.from + " "+err);
+                                }
+                                self.app.logger.debug("Copying folders succeed");
+                                return resolve();
+                            });
+                            */
                         }catch(e) {
                             console.error("Error ncp : ", e);
+                            reject(e);
                         }
                     }
                 })
@@ -97,7 +107,7 @@ Extractor.prototype.refreshData = function(fromCache) {
         data:       undefined
     };
 
-    console.info("Refreshing data "+(fromCache ? "from cache" : "from source"));
+    self.app.logger.info("Refreshing data "+(fromCache ? "from cache" : "from source"));
 
     return new Promise(function(resolve, reject) {
                 if (fromCache) {
@@ -110,29 +120,34 @@ Extractor.prototype.refreshData = function(fromCache) {
                 return fromCache ? true : self.sourcer.load(self.config.outputFolder); // Try to load data in the temporary folder
             })
             .then(function() {
+                self.app.logger.debug("Loading posts...");
                 return self.loadPosts();        // Try to load posts
             })
             .then(function(posts) {
                 self.data.posts = posts;
+                self.app.logger.debug("Loading users...");
                 return self.loadUsers();        // Try to load users
             })
             .then(function(users) {
                 self.data.users = users;
+                self.app.logger.debug("Loading tags...");
                 return self.loadTags();         // Try to load tags
             })
             .then(function(tags) {
+                self.app.logger.debug("Checking data...");
                 self.data.tags = tags;
                 return self.verifyData();       // Verify data
             })
             .then(function(verifyResult) {
                 refreshResult.errors  = _.map(verifyResult.errors, function(e) { return e.message; });
                 refreshResult.warning = verifyResult.warnings;
-
+                self.app.logger.debug("Data checked status "+(refreshResult.status ? "failed" : "success"));
                 if (refreshResult.errors.length > 0) {
                     refreshResult.status = false;
                     return;
                 } else {
                     refreshResult.status = true;
+                    self.app.logger.debug("Copying assets");
                     return fromCache ? true : self.copyPublicAssets();   // Copy the public assets data into the main folder
                 }
             })
@@ -140,7 +155,7 @@ Extractor.prototype.refreshData = function(fromCache) {
                 if (refreshResult.status) {
                     refreshResult.data = self.data;
                 }
-
+                self.app.logger.debug("Assets copied");
                 return refreshResult;
             }).catch(function(e) {
                 refreshResult.errors.push(e);
@@ -365,18 +380,6 @@ Extractor.prototype.finalizeData = function(data) {
     });
 
     return newData;
-
-}
-
-
-function displayErrorsAndExit(msg, errors) {
-    if (errors.length > 0) {
-        console.error(msg);
-        _.each(errors, function(error) {
-            console.error("  - " + error.message);
-        });
-        process.exit(1);
-    }
 }
 
 
