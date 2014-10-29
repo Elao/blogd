@@ -89,17 +89,17 @@ fs.readFile(app.config.backupFile, function(err, data) {
     }
 });
 
-var Routing = RF.Routing(app, RF.Security(null, app.config.security), {pathControllers: __dirname + '/controllers'});
+var Routing = RF.Routing(app, app.config.security, {pathControllers: __dirname + '/controllers'});
 var ApiController = Routing.loadController('api', app.config);
 
-Routing.loadRoute('GET',    '/posts',         'admin',       'api/posts')
-       .loadRoute('GET',    '/posts/:tag',    'admin',       'api/posts')
-       .loadRoute('GET',    '/post/:slug',    'admin',       'api/post')
-       .loadRoute('GET',    '/tags',          'admin',       'api/tags')
-       .loadRoute('GET',    '/authors',       'admin',       'api/authors')
-       .loadRoute('GET',    '/status',        'admin',       'api/status')
-       .loadRoute('GET',    '/refresh',       'admin',       'api/refresh')
-       .loadRoute('GET',    '/authors/:slug', 'admin',       'api/author')
-       .loadRoute('GET',    '/authors/:slug/posts', 'admin', 'api/authorPosts');
+Routing.loadRoute('GET',    '/posts',               'private',  'api/posts')
+       .loadRoute('GET',    '/posts/:tag',          'private',  'api/posts')
+       .loadRoute('GET',    '/post/:slug',          'private',  'api/post')
+       .loadRoute('GET',    '/tags',                'private',  'api/tags')
+       .loadRoute('GET',    '/authors',             'private',  'api/authors')
+       .loadRoute('GET',    '/status',              'private',  'api/status')
+       .loadRoute('GET',    '/refresh',             'private',  'api/refresh')
+       .loadRoute('GET',    '/authors/:slug',       'private',  'api/author')
+       .loadRoute('GET',    '/authors/:slug/posts', 'private',  'api/authorPosts');
 
 

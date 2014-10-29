@@ -17,14 +17,11 @@ var defaultConfig = {
         url:  "/images"
     }],
     security: {
-        rules: {
-            guest: {},
-            admin: {}
-        },
-        basic: {
-            realm:    'BlogD Private Api',
-            user:     'admin',
-            password: 'private'
+        methods: {},
+        rules:   {
+            private: {
+                methods: ['guest']
+            }
         }
     }
 }

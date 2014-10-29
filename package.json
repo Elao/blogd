@@ -1,7 +1,7 @@
 {
   "name": "blogd",
   "description": "Node Server providing an API to expose blog data from a formated github repository",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "licenses": [
     {
       "type": "MIT",
@@ -48,7 +48,7 @@
     "ncp": "^1.0.1",
     "nodegit": "^0.1.4",
     "request": "^2.4.1",
-    "rest-framework": "^0.2.1",
+    "rest-framework": "0.2.6",
     "rimraf": "^2.2.8",
     "unzip": "^0.1.11"
   }

@@ -12,14 +12,11 @@ exports.assetsToCopy  = [{
 }];
 
 exports.security = {
-    rules: {
-      guest:  {}, // Not authentication required
-      admin:  {}  // Add basic http auth methods: ['http'],  callback: function(user){ return user.username == 'admin'; }}
-    },
-    basic: {
-      realm:    'BlogD Private Api',
-      user:     'admin',
-      password: 'private'
+    methods: {},
+    rules:   {
+      private: {
+        methods: ['guest']
+      }
     }
 };
 
