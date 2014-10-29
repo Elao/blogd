@@ -70,18 +70,14 @@ Extractor.prototype.copyPublicAssets = function() {
                     } else {
                         try{
                             self.app.logger.debug("Copying folders ...");
-                            setTimeout(function(){ resolve() }, 4000);
-                            /*
-                            return resolve();
                             ncp(toCopy.from, toCopy.to, function(err) {
-                                self.app.logger.debug("Copying folders succeed");
                                 if (err) {
                                     console.error("[ASSETS] " + toCopy.from + " "+err);
+                                } else {
+                                    self.app.logger.debug("Copying folders succeed");    
                                 }
-                                self.app.logger.debug("Copying folders succeed");
                                 return resolve();
                             });
-                            */
                         }catch(e) {
                             console.error("Error ncp : ", e);
                             reject(e);
