@@ -67,7 +67,9 @@ fs.readFile(app.config.backupFile, function(err, data) {
     if (err) { // File doesnt exists or is unreadable
         app.logger.error("Backup file "+app.config.backupFile+" not found or unreadable");
         loadFreshContent()
-        .then(listening)
+        .then(function(){
+            listening();
+        })
         .catch(function(e){
             app.logger.error("Error loading fresh content : ", e);
         })

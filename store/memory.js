@@ -54,6 +54,12 @@ Model.prototype.getPosts = function(params) {
             });
         }
 
+        if (params.status) {
+            posts = _.filter(posts, function(post) {
+                return post.metas.status == params.status;
+            });
+        }
+
         var limit  = params.limit  || 10;
         var offset = params.offset || 0;
 

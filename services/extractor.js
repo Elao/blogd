@@ -49,7 +49,7 @@ Extractor.prototype.cleanData = function() {
                 console.error("Cleaning output folder failed : ", err);
                 return reject(err);
             } else {
-                return resolve();
+                return resolve(true);
             }
         })
     });
@@ -62,22 +62,28 @@ Extractor.prototype.copyPublicAssets = function() {
     try {
         self.config.assetsToCopy.map(function(toCopy) {
             promises.push(new Promise(function(resolve, reject) {
-                self.app.logger.debug("Assets from "+toCopy.from+" => "+toCopy.to);
+                self.app.logger.debug("[ASSETS] from "+toCopy.from+" => "+toCopy.to);
                 fs.exists(toCopy.from, function(exists) {
                     if (!exists) {
                         self.app.logger.error("Assets folder not found: "+toCopy.from);
-                        return resolve();
+                        return resolve(true);
                     } else {
                         try{
-                            self.app.logger.debug("Copying folders ...");
-                            ncp(toCopy.from, toCopy.to, function(err) {
+                            rimraf(toCopy.to, function(err) {
                                 if (err) {
-                                    console.error("[ASSETS] " + toCopy.from + " "+err);
+                                    console.log("[ASSETS] Error cleaning : "+toCopy.to+" : "+err.message);
+                                    return resolve(true);
                                 } else {
-                                    self.app.logger.debug("Copying folders succeed");    
+                                    ncp(toCopy.from, toCopy.to, function(err) {
+                                        if (err) {
+                                            console.error("[ASSETS] " + toCopy.from + " "+err.message);
+                                        } else {
+                                            self.app.logger.debug("[ASSETS] Copying folders succeed");    
+                                        }
+                                        return resolve(true);
+                                    });
                                 }
-                                return resolve();
-                            });
+                            })
                         }catch(e) {
                             console.error("Error ncp : ", e);
                             reject(e);

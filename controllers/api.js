@@ -30,6 +30,10 @@ Controller.prototype.getPostsAction = function() {
             params.offset = parseInt(req.param('offset'));
         }
 
+        if (req.param('status')) {
+            params.status = req.param('status');
+        }
+
         self.app.db.getPosts(params).then(function(posts) {
             return res.json(posts || []);
         }).catch(function(e) {
