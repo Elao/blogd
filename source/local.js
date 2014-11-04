@@ -4,6 +4,7 @@ module.exports = function (app, config) {
 
 var _       = require('lodash'),
     Promise = require('bluebird'),
+    rimraf  = require('rimraf');
     ncp     = require('ncp').ncp;
 
 ncp.limit = 16;
@@ -19,8 +20,13 @@ Sourcer.prototype.load = function(folder) {
     var self = this;
 
     return new Promise(function(resolve, reject) {
-        ncp(self.config.source.path, folder, function (err) {
-            return err ? reject(err) : resolve();
-        });
+        rimraf(folder, function(err) {
+            if (err) {
+                return reject(err);
+            }
+            ncp(self.config.source.path, folder, function (err) {
+                return err ? reject(err) : resolve();
+            });    
+        })
     });
 }
