@@ -81,8 +81,8 @@ Available configuration options:
 
 <table>
 	<tr><th>Method</th><th>Route</th><th>Params</th><th>Description</th><tr>
-	<tr><td>GET</td><td>/posts</td><td><em>limit</em> The number of posts to retrieve<br /><em>offset</em> The offset </td><td>Retrieve list of blog's post ordered by publish date desc</td></tr>
-	<tr><td>GET</td><td>/posts/:tag</td><td>tag: a tag</td><td>Retrive list of blog's post by tag</td></tr>
+	<tr><td>GET</td><td>/posts</td><td><em>limit</em> The number of posts to retrieve<br /><em>offset</em> The offset<br /><em>status</em> Filter by post status</td><td>Retrieve list of blog's post ordered by publish date desc</td></tr>
+	<tr><td>GET</td><td>/posts/:tag</td><td>tag: a tag<br /><em>limit</em> The number of posts to retrieve<br /><em>offset</em> The offset<br /><em>status</em> Filter by post status</td><td>Retrive list of blog's post by tag</td></tr>
 	<tr><td>GET</td><td>/post/:slug</td><td>slug: a post's slug</td><td>Retrieve a single post</td></tr>
 	<tr><td>GET</td><td>/tags</td><td>_none_</td><td>Retrieve the list of available tags</td></tr>
 	<tr><td>GET</td><td>/authors</td><td>_none_</td><td>Retrieve the list of authors</td></tr>
