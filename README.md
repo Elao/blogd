@@ -67,9 +67,9 @@ Available configuration options:
 		<td>
 			Where to find the content.
 			<ul>
-				<li> __type__ : The type of source (folder, git, zip)</li>
+				<li> __type__ : The type of source (local, git, zip)</li>
 				<li> __url__ : The url of the zip file (for the *type zip*)</li>
-				<li> __folder__ : The folder to get data from (for the *type folder*)</li>
+				<li> __path__ : The path to folder to get data from (for the *type local*)</li>
 				<li> __repository__ : The url of the git repository (for the *type git*)</li>
 			</ul>
 		</td>
@@ -192,17 +192,22 @@ The metas are like this:
 
 _Example of a post meta file:_
 
-    {
-        "tags":	           		["Symfony2", "Toto", "Titi"],
-        "title":				"My super post from a nice repository",
-        "slug":					"my-super-post-from-a-nice-repository",
-        "status":				"published",
-        "meta_title":			"Imported post from a repository",
-        "meta_description":		"A super amazing post about everything",
-        "publish_by":"			vincent.bouzeran@elao.com",
-        "publish_at":			"2014-07-06"
-    }
-
+```
+{
+    "tags":                 ["Infra", "Proxmox", "Linux"],
+    "title":                "Partitioning a proxmox server",
+    "slug":                 "partitioning-a-proxmox-server",
+    "status":               "published",
+    "meta_category":        "virtualisation",
+    "meta_title":           "Partitioning a proxmox server",
+    "meta_description":     "How to do it clean and effective",
+    "meta_language":        "en",
+    "meta_keywords":        ["Proxmox", "Infra", "Linux", "OVH"],
+    "thumbnail":            "/blog/medias/thumbnails/proxmox.png",
+    "publish_by":           "guewen-faivre",
+    "publish_at":           "2014-11-13"
+}
+```
 
 # TODO
 * Add more checks on data
