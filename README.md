@@ -56,9 +56,9 @@ Available configuration options:
 			array of folder to copy and/or map.<br /> 
 			The object should contains: <br />
 			<ul>
-				<li>__from__ : The folder to copy (*required*)</li>
-				<li>__to__ : The destination folder (*required*)</li>
-				<li>__url__ : The absolute url to bind the folder (if none, it'll not be mapped)</li>
+				<li>**from** : The folder to copy (*required*)</li>
+				<li>**to** : The destination folder (*required*)</li>
+				<li>**url** : The absolute url to bind the folder (if none, it'll not be mapped)</li>
 		</td>
 	</tr>
 	<tr>
@@ -67,10 +67,10 @@ Available configuration options:
 		<td>
 			Where to find the content.
 			<ul>
-				<li> __type__ : The type of source (local, git, zip)</li>
-				<li> __url__ : The url of the zip file (for the *type zip*)</li>
-				<li> __path__ : The path to folder to get data from (for the *type local*)</li>
-				<li> __repository__ : The url of the git repository (for the *type git*)</li>
+				<li> **type** : The type of source (local, git, zip)</li>
+				<li> **url** : The url of the zip file (for the *type zip*)</li>
+				<li> **path** : The path to folder to get data from (for the *type local*)</li>
+				<li> **repository** : The url of the git repository (for the *type git*)</li>
 			</ul>
 		</td>
 	</tr>
@@ -84,12 +84,12 @@ Available configuration options:
 	<tr><td>GET</td><td>/posts</td><td><em>limit</em> The number of posts to retrieve<br /><em>offset</em> The offset<br /><em>status</em> Filter by post status</td><td>Retrieve list of blog's post ordered by publish date desc</td></tr>
 	<tr><td>GET</td><td>/posts/:tag</td><td>tag: a tag<br /><em>limit</em> The number of posts to retrieve<br /><em>offset</em> The offset<br /><em>status</em> Filter by post status</td><td>Retrive list of blog's post by tag</td></tr>
 	<tr><td>GET</td><td>/post/:slug</td><td>slug: a post's slug</td><td>Retrieve a single post</td></tr>
-	<tr><td>GET</td><td>/tags</td><td>_none_</td><td>Retrieve the list of available tags</td></tr>
-	<tr><td>GET</td><td>/authors</td><td>_none_</td><td>Retrieve the list of authors</td></tr>
+	<tr><td>GET</td><td>/tags</td><td>**none**</td><td>Retrieve the list of available tags</td></tr>
+	<tr><td>GET</td><td>/authors</td><td>**none**</td><td>Retrieve the list of authors</td></tr>
     <tr><td>GET</td><td>/authors/:slug</td><td>slug: slug or email of an author</td><td>Retrieve an author</td></tr>
     <tr><td>GET</td><td>/authors/:slug/posts</td><td>slug: slug or email of an author</td><td>Retrieve list of posts from given author</td></tr>    
-	<tr><td>GET</td><td>/status</td><td>_none_</td><td>Retrieve the content status (last update, number of tags, posts, authors, ...)</td></tr>
-	<tr><td>GET</td><td>/refresh</td><td>_none_</td><td>Force the refresh of the data by retrieving the remote data from the source</td></tr>
+	<tr><td>GET</td><td>/status</td><td>**none**</td><td>Retrieve the content status (last update, number of tags, posts, authors, ...)</td></tr>
+	<tr><td>GET</td><td>/refresh</td><td>**none**</td><td>Force the refresh of the data by retrieving the remote data from the source</td></tr>
 </table>
 
 
